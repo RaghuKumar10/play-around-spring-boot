@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import learn.springboot.exception.RecordsNotFoundException;
 import learn.springboot.exception.ResourceNotFoundException;
+import learn.springboot.user.dto.UserDto;
 import learn.springboot.user.entity.User;
 import learn.springboot.user.service.UserService;
 
@@ -36,7 +37,7 @@ public class UserController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "${'swagger.usercontroller.create.value'}", code = 201, response = User.class)
-	public User create(@RequestBody User user) {
+	public User create(@RequestBody UserDto user) {
 		return userService.create(user);
 	}
 	

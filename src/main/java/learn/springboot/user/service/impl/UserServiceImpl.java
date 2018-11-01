@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import learn.springboot.exception.RecordsNotFoundException;
 import learn.springboot.exception.ResourceNotFoundException;
+import learn.springboot.user.dto.UserDto;
 import learn.springboot.user.entity.Role;
 import learn.springboot.user.entity.User;
 import learn.springboot.user.repository.RolesRepository;
@@ -23,14 +25,15 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
 	private RolesRepository roleRepository;
-	
+	private ModelMapper modelMapper;
 	@Autowired private Environment env;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RolesRepository roleRepository) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RolesRepository roleRepository, ModelMapper modelMapper) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.roleRepository = roleRepository;
+		this.modelMapper = modelMapper;
 	}
 	@Override
 	public List<User> getAll() throws RecordsNotFoundException {
@@ -59,9 +62,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User create(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+	public User create(UserDto userDto) {
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		Set<Role> roles = roleRepository.findByRoleName(env.getProperty("user.default.userrole"));
+		User user = modelMapper.map(userDto, User.class);
 		user.setRoles(roles);
 		return userRepository.save(user);
 	}
