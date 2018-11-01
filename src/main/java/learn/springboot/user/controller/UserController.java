@@ -2,6 +2,8 @@ package learn.springboot.user.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +39,7 @@ public class UserController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "${'swagger.usercontroller.create.value'}", code = 201, response = User.class)
-	public User create(@RequestBody UserDto user) {
+	public User create(@Valid @RequestBody UserDto user) {
 		return userService.create(user);
 	}
 	
