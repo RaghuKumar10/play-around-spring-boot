@@ -1,58 +1,103 @@
 package learn.springboot.config.security.model;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import learn.springboot.user.entity.User;
 
-public class SecuredUserDetails extends User implements UserDetails {
+public class SecuredUserDetails implements UserDetails {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private transient Set<String> roles; 
-	
-	public SecuredUserDetails(User user, Set<String> roles) {
-		super(user);
-		this.roles = roles;
-	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		String rolesDelimited = StringUtils.collectionToCommaDelimitedString(roles);			
-		return AuthorityUtils.commaSeparatedStringToAuthorityList(rolesDelimited);
-	}
+	private final Long id;
+    private final String username;
+    private final String firstname;
+    private final String lastname;
+    private final String password;
+    private final String email;
+    private final Collection<? extends GrantedAuthority> authorities;
+    private final String enabled;
+    private final Date lastPasswordResetDate;
+			
+	public SecuredUserDetails(User user, Collection<? extends GrantedAuthority> authorities) {
+	        this.id = user.getId();
+	        this.username = user.getUserName();
+	        this.firstname = user.getFirstName();
+	        this.lastname = user.getLastName();
+	        this.email = user.getEmailId();
+	        this.password = user.getPassword();
+	        this.authorities = authorities;
+	        this.enabled = user.getEnabled();
+	        this.lastPasswordResetDate = user.getLastPasswordResetDate();
+	    }
 
-	@Override
-	public String getUsername() {
-		return super.getEmailId();
-	}
+    @JsonIgnore
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled.equals("Y");
+    }
+
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
 
 }

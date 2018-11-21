@@ -1,5 +1,6 @@
 package learn.springboot.user.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User get(int id) throws ResourceNotFoundException {
+	public User get(long id) throws ResourceNotFoundException {
 		Optional<User> user = userRepository.findById(id);
 		if(user.isPresent())
 			return user.get();
@@ -52,12 +53,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		userRepository.deleteById(id);
 	}
 
 	@Override
-	public User update(int id, User user) {
+	public User update(long id, User user) {
 		return userRepository.save(user);
 	}
 	
@@ -66,6 +67,8 @@ public class UserServiceImpl implements UserService {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		Set<Role> roles = roleRepository.findByRoleName(env.getProperty("user.default.userrole"));
 		User user = modelMapper.map(userDto, User.class);
+		user.setEnabled(env.getProperty("user.default.status"));
+		user.setLastPasswordResetDate(new Date());
 		user.setRoles(roles);
 		return userRepository.save(user);
 	}

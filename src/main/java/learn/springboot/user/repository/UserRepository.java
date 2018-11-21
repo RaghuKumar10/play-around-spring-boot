@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import learn.springboot.user.entity.User;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer>{
+public interface UserRepository extends CrudRepository<User, Long>{
 	@Override
 	List<User> findAll();
 	

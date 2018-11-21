@@ -9,8 +9,8 @@ import learn.springboot.user.entity.User;
 
 public interface UserService {
 	List<User> getAll() throws RecordsNotFoundException;
-	User get(int id) throws ResourceNotFoundException;
+	User get(long id) throws ResourceNotFoundException;
 	User create(UserDto userDto);
-	void delete(int id);
-	User update(int id, User user);
+	void delete(long id);
+	User update(long id, User user);
 }

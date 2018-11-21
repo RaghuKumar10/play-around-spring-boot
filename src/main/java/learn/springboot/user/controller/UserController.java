@@ -53,20 +53,20 @@ public class UserController {
 	@GetMapping("{id}")
 	@ResponseStatus(HttpStatus.FOUND)
 	@ApiOperation(value = "${'swagger.usercontroller.get.value'}", code = 302, response = User.class)
-	public User getUser(@PathVariable int id) throws ResourceNotFoundException {
+	public User getUser(@PathVariable long id) throws ResourceNotFoundException {
 		return userService.get(id);
 	}
 	
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(value = "${'swagger.usercontroller.update.value'}", code = 200, response = User.class)
-	public User update(@RequestBody User user, @PathVariable int id) {
+	public User update(@RequestBody User user, @PathVariable long id) {
 		return userService.update(id, user);
 	}
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)@ApiOperation(value = "${'swagger.usercontroller.delete.value'}", code = 204)
-	public void delete(@PathVariable int id) {
+	public void delete(@PathVariable long id) {
 		userService.delete(id);
 	}
 }
