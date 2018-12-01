@@ -29,7 +29,7 @@ public class User {
 	
 	@Column(name = "user_id")
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_GENERATOR")
-	@SequenceGenerator(name = "USER_ID_GENERATOR", sequenceName = "USER_ID_SEQUENCE")
+	@SequenceGenerator(name = "USER_ID_GENERATOR", sequenceName = "USER_ID_SEQUENCE", initialValue = 3)
 	private long id;
 	
 	private String password;
